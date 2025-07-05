@@ -1,5 +1,5 @@
 const express = require('express');
-const mongoose = require('mongoose');
+const { createClient } = require('@supabase/supabase-js');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
@@ -10,16 +10,18 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// MongoDB 연결
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/grigo-entertainment', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).then(() => {
-  console.log('MongoDB 연결 성공');
-}).catch(err => {
-  console.warn('MongoDB 연결 실패:', err.message);
-  console.warn('서버는 계속 실행되지만 데이터 저장 기능이 제한됩니다.');
-});
+// Supabase 클라이언트 초기화
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_ANON_KEY;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+  console.error('Supabase URL과 API 키가 필요합니다. .env 파일을 확인해주세요.');
+  process.exit(1);
+}
+
+const supabase = createClient(supabaseUrl, supabaseKey);
+const supabaseAdmin = supabaseServiceKey ? createClient(supabaseUrl, supabaseServiceKey) : supabase;
 
 // 미들웨어 설정
 app.use(express.json());
@@ -67,54 +69,36 @@ const upload = multer({
   }
 });
 
-// 스키마 정의
-const clientSchema = new mongoose.Schema({
-  nameKorean: { type: String, required: true },
-  nameEnglish: { type: String, required: true },
-  logoPath: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now }
-});
-
-const portfolioSchema = new mongoose.Schema({
-  category: { 
-    type: String, 
-    required: true,
-    enum: ['유튜브 브랜디드', '유튜브 PPL', '브랜드필름 제작', 'SNS 광고', '전속모델']
-  },
-  videoLink: { type: String, required: true },
-  clientName: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now }
-});
-
-const adminSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now }
-});
-
-const Client = mongoose.model('Client', clientSchema);
-const Portfolio = mongoose.model('Portfolio', portfolioSchema);
-const Admin = mongoose.model('Admin', adminSchema);
-
-// 관리자 계정 초기화 (최초 실행시)
-async function initAdmin() {
+// 데이터베이스 테이블 생성 함수
+async function initDatabase() {
   try {
-    const adminExists = await Admin.findOne({ username: 'admin' });
+    console.log('Supabase 테이블 초기화 중...');
+    
+    // 관리자 테이블에 기본 관리자 추가
+    const { data: adminExists } = await supabaseAdmin
+      .from('admins')
+      .select('*')
+      .eq('username', 'admin')
+      .single();
+
     if (!adminExists) {
       const hashedPassword = await bcrypt.hash('admin123', 10);
-      const admin = new Admin({
-        username: 'admin',
-        password: hashedPassword
-      });
-      await admin.save();
+      await supabaseAdmin
+        .from('admins')
+        .insert([
+          { username: 'admin', password: hashedPassword }
+        ]);
       console.log('기본 관리자 계정이 생성되었습니다. (admin/admin123)');
     }
+    
+    console.log('Supabase 연결 성공');
   } catch (error) {
-    console.error('관리자 계정 초기화 오류:', error);
+    console.warn('데이터베이스 초기화 오류:', error.message);
+    console.warn('Supabase 설정을 확인해주세요.');
   }
 }
 
-initAdmin();
+initDatabase();
 
 // 인증 미들웨어
 const requireAuth = (req, res, next) => {
@@ -125,43 +109,74 @@ const requireAuth = (req, res, next) => {
   }
 };
 
+// 유틸리티 함수
+function extractYouTubeId(url) {
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+}
+
 // 라우트 설정
 
 // 메인 클라이언트 페이지
 app.get('/', async (req, res) => {
   try {
-    const clients = await Client.find().sort({ createdAt: -1 });
-    const portfolios = await Portfolio.find().sort({ createdAt: -1 });
+    // 클라이언트 데이터 가져오기
+    const { data: clients, error: clientsError } = await supabase
+      .from('clients')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    // 포트폴리오 데이터 가져오기
+    const { data: portfolios, error: portfoliosError } = await supabase
+      .from('portfolios')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (clientsError) console.warn('클라이언트 데이터 로딩 오류:', clientsError);
+    if (portfoliosError) console.warn('포트폴리오 데이터 로딩 오류:', portfoliosError);
     
     // 기존 index.html 파일을 읽어서 동적 데이터로 수정
     let html = fs.readFileSync('index.html', 'utf8');
     
     // 클라이언트 로고 동적 생성
     let clientLogosHtml = '';
-    clients.forEach(client => {
-      clientLogosHtml += `<img src="/uploads/logos/${path.basename(client.logoPath)}" alt="${client.nameKorean}" class="client-logo">`;
-    });
+    if (clients && clients.length > 0) {
+      clients.forEach(client => {
+        clientLogosHtml += `<img src="/uploads/logos/${path.basename(client.logo_path)}" alt="${client.name_korean}" class="client-logo">`;
+      });
+    }
     
     // 포트폴리오 동적 생성
     let portfoliosHtml = '';
-    portfolios.forEach(portfolio => {
-      const videoId = extractYouTubeId(portfolio.videoLink);
-      const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-      
-      portfoliosHtml += `
-        <div class="portfolio-card">
-          <img src="${thumbnailUrl}" alt="${portfolio.clientName}" class="video-thumbnail">
+    if (portfolios && portfolios.length > 0) {
+      portfolios.forEach(portfolio => {
+        const videoId = extractYouTubeId(portfolio.video_link);
+        const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+        
+        portfoliosHtml += `
+          <div class="portfolio-card">
+            <img src="${thumbnailUrl}" alt="${portfolio.client_name}" class="video-thumbnail">
+            <div class="portfolio-info">
+              <h4 class="text-lg font-semibold mb-2">${portfolio.client_name}</h4>
+              <p class="text-sm text-gray-300 mb-3">${portfolio.category}</p>
+              <a href="${portfolio.video_link}" target="_blank" class="text-purple-400 hover:text-purple-300 text-sm">영상 보기 →</a>
+            </div>
+          </div>
+        `;
+      });
+    } else {
+      portfoliosHtml = `
+        <div class="portfolio-card text-center" style="grid-column: 1 / -1;">
           <div class="portfolio-info">
-            <h4 class="text-lg font-semibold mb-2">${portfolio.clientName}</h4>
-            <p class="text-sm text-gray-300 mb-3">${portfolio.category}</p>
-            <a href="${portfolio.videoLink}" target="_blank" class="text-purple-400 hover:text-purple-300 text-sm">영상 보기 →</a>
+            <p class="text-gray-400">포트폴리오를 준비중입니다.</p>
           </div>
         </div>
       `;
-    });
+    }
     
     // HTML에 동적 데이터 삽입
-    html = html.replace('<!-- DYNAMIC_CLIENTS -->', clientLogosHtml);
+    html = html.replace(/<!-- DYNAMIC_CLIENTS -->/g, clientLogosHtml);
     html = html.replace('<!-- DYNAMIC_PORTFOLIO -->', portfoliosHtml);
     
     res.send(html);
@@ -215,9 +230,24 @@ app.get('/admin/login', (req, res) => {
 app.post('/admin/login', async (req, res) => {
   try {
     const { username, password } = req.body;
-    const admin = await Admin.findOne({ username });
     
-    if (admin && await bcrypt.compare(password, admin.password)) {
+    const { data: admin, error } = await supabaseAdmin
+      .from('admins')
+      .select('*')
+      .eq('username', username)
+      .single();
+    
+    if (error || !admin) {
+      return res.send(`
+        <script>
+          alert('로그인 정보가 올바르지 않습니다.');
+          window.location.href = '/admin/login';
+        </script>
+      `);
+    }
+    
+    const passwordMatch = await bcrypt.compare(password, admin.password);
+    if (passwordMatch) {
       req.session.isAdmin = true;
       res.redirect('/admin');
     } else {
@@ -237,8 +267,15 @@ app.post('/admin/login', async (req, res) => {
 // 관리자 대시보드
 app.get('/admin', requireAuth, async (req, res) => {
   try {
-    const clients = await Client.find().sort({ createdAt: -1 });
-    const portfolios = await Portfolio.find().sort({ createdAt: -1 });
+    const { data: clients } = await supabase
+      .from('clients')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    const { data: portfolios } = await supabase
+      .from('portfolios')
+      .select('*')
+      .order('created_at', { ascending: false });
     
     res.send(`
       <!DOCTYPE html>
@@ -275,7 +312,7 @@ app.get('/admin', requireAuth, async (req, res) => {
                                      class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:border-green-400">
                           </div>
                           <div class="mb-4">
-                              <label class="block text-sm font-medium mb-2">로고 파일 (PNG)</label>
+                              <label class="block text-sm font-medium mb-2">로고 파일 (PNG/JPG)</label>
                               <input type="file" name="logo" accept=".png,.jpg,.jpeg" required 
                                      class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:border-green-400">
                           </div>
@@ -286,18 +323,18 @@ app.get('/admin', requireAuth, async (req, res) => {
                       </form>
                       
                       <div class="max-h-64 overflow-y-auto">
-                          <h3 class="font-semibold mb-2">등록된 고객사 (${clients.length}개)</h3>
-                          ${clients.map(client => `
+                          <h3 class="font-semibold mb-2">등록된 고객사 (${clients ? clients.length : 0}개)</h3>
+                          ${clients ? clients.map(client => `
                               <div class="flex items-center justify-between bg-gray-700 p-3 rounded mb-2">
                                   <div class="flex items-center">
-                                      <img src="/uploads/logos/${path.basename(client.logoPath)}" alt="${client.nameKorean}" class="w-8 h-8 object-contain mr-3">
-                                      <span>${client.nameKorean} (${client.nameEnglish})</span>
+                                      <img src="/uploads/logos/${path.basename(client.logo_path)}" alt="${client.name_korean}" class="w-8 h-8 object-contain mr-3">
+                                      <span>${client.name_korean} (${client.name_english})</span>
                                   </div>
-                                  <button onclick="deleteClient('${client._id}')" class="text-red-400 hover:text-red-300">
+                                  <button onclick="deleteClient('${client.id}')" class="text-red-400 hover:text-red-300">
                                       <i class="fas fa-trash"></i>
                                   </button>
                               </div>
-                          `).join('')}
+                          `).join('') : '<p class="text-gray-400">등록된 고객사가 없습니다.</p>'}
                       </div>
                   </div>
                   
@@ -336,18 +373,18 @@ app.get('/admin', requireAuth, async (req, res) => {
                       </form>
                       
                       <div class="max-h-64 overflow-y-auto">
-                          <h3 class="font-semibold mb-2">등록된 포트폴리오 (${portfolios.length}개)</h3>
-                          ${portfolios.map(portfolio => `
+                          <h3 class="font-semibold mb-2">등록된 포트폴리오 (${portfolios ? portfolios.length : 0}개)</h3>
+                          ${portfolios ? portfolios.map(portfolio => `
                               <div class="flex items-center justify-between bg-gray-700 p-3 rounded mb-2">
                                   <div>
-                                      <div class="font-medium">${portfolio.clientName}</div>
+                                      <div class="font-medium">${portfolio.client_name}</div>
                                       <div class="text-sm text-gray-400">${portfolio.category}</div>
                                   </div>
-                                  <button onclick="deletePortfolio('${portfolio._id}')" class="text-red-400 hover:text-red-300">
+                                  <button onclick="deletePortfolio('${portfolio.id}')" class="text-red-400 hover:text-red-300">
                                       <i class="fas fa-trash"></i>
                                   </button>
                               </div>
-                          `).join('')}
+                          `).join('') : '<p class="text-gray-400">등록된 포트폴리오가 없습니다.</p>'}
                       </div>
                   </div>
               </div>
@@ -389,13 +426,21 @@ app.post('/admin/clients', requireAuth, upload.single('logo'), async (req, res) 
     const { nameKorean, nameEnglish } = req.body;
     const logoPath = req.file.path;
     
-    const client = new Client({
-      nameKorean,
-      nameEnglish,
-      logoPath
-    });
+    const { error } = await supabaseAdmin
+      .from('clients')
+      .insert([
+        {
+          name_korean: nameKorean,
+          name_english: nameEnglish,
+          logo_path: logoPath
+        }
+      ]);
     
-    await client.save();
+    if (error) {
+      console.error('고객사 추가 오류:', error);
+      return res.status(500).send('고객사 추가에 실패했습니다.');
+    }
+    
     res.redirect('/admin');
   } catch (error) {
     console.error('고객사 추가 오류:', error);
@@ -406,14 +451,26 @@ app.post('/admin/clients', requireAuth, upload.single('logo'), async (req, res) 
 // 고객사 삭제
 app.delete('/admin/clients/:id', requireAuth, async (req, res) => {
   try {
-    const client = await Client.findById(req.params.id);
-    if (client) {
-      // 로고 파일 삭제
-      if (fs.existsSync(client.logoPath)) {
-        fs.unlinkSync(client.logoPath);
-      }
-      await Client.findByIdAndDelete(req.params.id);
+    const { data: client } = await supabaseAdmin
+      .from('clients')
+      .select('logo_path')
+      .eq('id', req.params.id)
+      .single();
+    
+    if (client && fs.existsSync(client.logo_path)) {
+      fs.unlinkSync(client.logo_path);
     }
+    
+    const { error } = await supabaseAdmin
+      .from('clients')
+      .delete()
+      .eq('id', req.params.id);
+    
+    if (error) {
+      console.error('고객사 삭제 오류:', error);
+      return res.status(500).send('삭제에 실패했습니다.');
+    }
+    
     res.status(200).send('삭제 완료');
   } catch (error) {
     console.error('고객사 삭제 오류:', error);
@@ -426,13 +483,21 @@ app.post('/admin/portfolios', requireAuth, async (req, res) => {
   try {
     const { category, videoLink, clientName } = req.body;
     
-    const portfolio = new Portfolio({
-      category,
-      videoLink,
-      clientName
-    });
+    const { error } = await supabaseAdmin
+      .from('portfolios')
+      .insert([
+        {
+          category,
+          video_link: videoLink,
+          client_name: clientName
+        }
+      ]);
     
-    await portfolio.save();
+    if (error) {
+      console.error('포트폴리오 추가 오류:', error);
+      return res.status(500).send('포트폴리오 추가에 실패했습니다.');
+    }
+    
     res.redirect('/admin');
   } catch (error) {
     console.error('포트폴리오 추가 오류:', error);
@@ -443,7 +508,16 @@ app.post('/admin/portfolios', requireAuth, async (req, res) => {
 // 포트폴리오 삭제
 app.delete('/admin/portfolios/:id', requireAuth, async (req, res) => {
   try {
-    await Portfolio.findByIdAndDelete(req.params.id);
+    const { error } = await supabaseAdmin
+      .from('portfolios')
+      .delete()
+      .eq('id', req.params.id);
+    
+    if (error) {
+      console.error('포트폴리오 삭제 오류:', error);
+      return res.status(500).send('삭제에 실패했습니다.');
+    }
+    
     res.status(200).send('삭제 완료');
   } catch (error) {
     console.error('포트폴리오 삭제 오류:', error);
@@ -454,8 +528,16 @@ app.delete('/admin/portfolios/:id', requireAuth, async (req, res) => {
 // API 엔드포인트
 app.get('/api/clients', async (req, res) => {
   try {
-    const clients = await Client.find().sort({ createdAt: -1 });
-    res.json(clients);
+    const { data, error } = await supabase
+      .from('clients')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) {
+      return res.status(500).json({ error: '데이터를 불러올 수 없습니다.' });
+    }
+    
+    res.json(data);
   } catch (error) {
     res.status(500).json({ error: '데이터를 불러올 수 없습니다.' });
   }
@@ -463,19 +545,20 @@ app.get('/api/clients', async (req, res) => {
 
 app.get('/api/portfolios', async (req, res) => {
   try {
-    const portfolios = await Portfolio.find().sort({ createdAt: -1 });
-    res.json(portfolios);
+    const { data, error } = await supabase
+      .from('portfolios')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) {
+      return res.status(500).json({ error: '데이터를 불러올 수 없습니다.' });
+    }
+    
+    res.json(data);
   } catch (error) {
     res.status(500).json({ error: '데이터를 불러올 수 없습니다.' });
   }
 });
-
-// 유틸리티 함수
-function extractYouTubeId(url) {
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-  const match = url.match(regExp);
-  return (match && match[2].length === 11) ? match[2] : null;
-}
 
 // 서버 시작
 app.listen(PORT, () => {
@@ -483,4 +566,8 @@ app.listen(PORT, () => {
   console.log(`클라이언트 페이지: http://localhost:${PORT}`);
   console.log(`관리자 페이지: http://localhost:${PORT}/admin`);
   console.log('기본 관리자 계정: admin / admin123');
+  console.log('\nSupabase 설정 필요:');
+  console.log('1. https://supabase.com 에서 프로젝트 생성');
+  console.log('2. .env 파일에 SUPABASE_URL과 SUPABASE_ANON_KEY 설정');
+  console.log('3. SQL 에디터에서 테이블 생성 스크립트 실행');
 });

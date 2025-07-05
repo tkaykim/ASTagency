@@ -20,7 +20,7 @@ GRIGO ENTERTAINMENT 크리에이티브 에이전시의 웹사이트와 관리자
 ## 기술 스택
 
 - **Backend**: Node.js, Express.js
-- **Database**: MongoDB, Mongoose
+- **Database**: Supabase (PostgreSQL)
 - **Frontend**: HTML5, CSS3, JavaScript, Tailwind CSS
 - **File Upload**: Multer
 - **Authentication**: Express-session, bcryptjs
@@ -29,36 +29,38 @@ GRIGO ENTERTAINMENT 크리에이티브 에이전시의 웹사이트와 관리자
 
 ### 1. 필수 요구사항
 - Node.js (v14 이상)
-- MongoDB (v4.4 이상)
 - npm 또는 yarn
+- Supabase 계정
 
-### 2. MongoDB 설치
+### 2. Supabase 프로젝트 설정
 ```bash
-# Ubuntu/Debian
-sudo apt update
-sudo apt install mongodb
-
-# macOS (Homebrew)
-brew tap mongodb/brew
-brew install mongodb-community
-
-# 또는 MongoDB Atlas (클라우드) 사용 가능
+# 1. https://supabase.com 방문하여 계정 생성
+# 2. "New Project" 클릭하여 새 프로젝트 생성
+# 3. 프로젝트 이름: grigo-entertainment
+# 4. 데이터베이스 비밀번호 설정
+# 5. 지역 선택 (Asia Northeast recommended)
 ```
 
-### 3. 프로젝트 설정
+### 3. 데이터베이스 설정
+```bash
+# 1. Supabase 대시보드에서 "SQL Editor" 클릭
+# 2. supabase-schema.sql 파일의 내용을 복사하여 붙여넣기
+# 3. "Run" 버튼을 클릭하여 테이블 생성
+```
+
+### 4. 프로젝트 설정
 ```bash
 # 의존성 설치
 npm install
 
-# 환경 변수 파일 확인 (.env)
-# 필요시 MongoDB URI 수정
-
-# MongoDB 시작 (로컬 설치시)
-sudo systemctl start mongodb  # Linux
-brew services start mongodb-community  # macOS
+# 환경 변수 설정
+# .env 파일에서 다음 값들을 설정:
+# SUPABASE_URL=https://your-project.supabase.co
+# SUPABASE_ANON_KEY=your-anon-key
+# SUPABASE_SERVICE_ROLE_KEY=your-service-role-key (선택사항)
 ```
 
-### 4. 서버 실행
+### 5. 서버 실행
 ```bash
 # 개발 모드 (nodemon 사용)
 npm run dev
@@ -67,7 +69,7 @@ npm run dev
 npm start
 ```
 
-### 5. 접속
+### 6. 접속
 - **클라이언트 페이지**: http://localhost:3000
 - **관리자 페이지**: http://localhost:3000/admin
 - **기본 관리자 계정**: admin / admin123
@@ -120,6 +122,7 @@ grigo-entertainment/
 ├── package.json           # 프로젝트 설정 및 의존성
 ├── .env                   # 환경 변수
 ├── .gitignore            # Git 제외 파일 목록
+├── supabase-schema.sql   # Supabase 데이터베이스 스키마
 ├── index.html            # 클라이언트 메인 페이지
 ├── uploads/              # 업로드된 파일 저장
 │   └── logos/           # 고객사 로고 파일들
@@ -132,10 +135,19 @@ grigo-entertainment/
 `.env` 파일에서 다음 변수들을 설정할 수 있습니다:
 
 ```env
-PORT=3000                                    # 서버 포트
-MONGODB_URI=mongodb://localhost:27017/grigo  # MongoDB 연결 URI
-SESSION_SECRET=your-secret-key               # 세션 암호화 키
+PORT=3000                                          # 서버 포트
+SUPABASE_URL=https://your-project.supabase.co     # Supabase 프로젝트 URL
+SUPABASE_ANON_KEY=your-anon-key                   # Supabase 익명 키
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key   # Supabase 서비스 역할 키 (선택사항)
+SESSION_SECRET=your-secret-key                     # 세션 암호화 키
 ```
+
+### Supabase 키 찾는 방법:
+1. Supabase 대시보드에서 프로젝트 선택
+2. Settings → API 클릭
+3. Project URL과 Project API keys 확인
+4. `anon public` 키를 SUPABASE_ANON_KEY로 사용
+5. `service_role` 키를 SUPABASE_SERVICE_ROLE_KEY로 사용 (관리자 기능용)
 
 ## 보안 고려사항
 
@@ -149,7 +161,9 @@ SESSION_SECRET=your-secret-key               # 세션 암호화 키
 ### 1. 환경 변수 설정
 ```bash
 export NODE_ENV=production
-export MONGODB_URI=your-production-mongodb-uri
+export SUPABASE_URL=https://your-project.supabase.co
+export SUPABASE_ANON_KEY=your-anon-key
+export SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 export SESSION_SECRET=your-strong-secret-key
 ```
 
@@ -175,10 +189,16 @@ server {
 
 ## 문제 해결
 
-### MongoDB 연결 실패
-- MongoDB 서비스가 실행 중인지 확인
-- 포트 27017이 열려있는지 확인
-- .env 파일의 MONGODB_URI 확인
+### Supabase 연결 실패
+- .env 파일의 SUPABASE_URL과 SUPABASE_ANON_KEY 확인
+- Supabase 프로젝트가 활성 상태인지 확인
+- API 키가 올바른지 Supabase 대시보드에서 재확인
+- 네트워크 연결 상태 확인
+
+### 데이터베이스 테이블이 없음
+- supabase-schema.sql 스크립트가 정상 실행되었는지 확인
+- Supabase SQL 에디터에서 테이블 목록 확인
+- RLS(Row Level Security) 정책이 올바르게 설정되었는지 확인
 
 ### 파일 업로드 실패
 - uploads/logos 디렉토리 권한 확인
