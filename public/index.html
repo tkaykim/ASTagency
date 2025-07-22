@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GRIGO ENTERTAINMENT - 광고, 콘텐츠 사업</title>
+    <title>ASTCOMPANY - 광고, 콘텐츠 사업</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -66,10 +66,10 @@
             align-items: center;
         }
         .scroll-content {
-            animation: scroll 30s linear infinite;
+            animation: scroll 60s linear infinite;
         }
         .scroll-content-reverse {
-            animation: scroll-reverse 25s linear infinite;
+            animation: scroll-reverse 50s linear infinite;
         }
         @keyframes scroll {
             0% { transform: translateX(0); }
@@ -84,15 +84,15 @@
             width: auto;
             max-width: 200px;
             object-fit: contain;
-            filter: grayscale(100%) brightness(0.8);
-            transition: all 0.3s ease;
-            background: rgba(255,255,255,0.85);
-            padding: 10px;
+            filter: none;
+            transition: all 0.3s;
+            background: none;
             border-radius: 12px;
-            box-shadow: 0 2px 8px 0 rgba(31,38,135,0.08);
+            box-shadow: none;
+            padding: 0;
         }
         .client-logo:hover {
-            filter: grayscale(0%) brightness(1);
+            filter: none;
             transform: scale(1.05);
         }
         .portfolio-card {
@@ -116,12 +116,23 @@
         }
         .portfolio-info {
             position: static;
-            background: none;
-            color: #fff;
-            padding: 1.2rem 1.2rem 1.2rem 1.2rem;
+            background: rgba(255,255,255,0.55);
+            color: #222;
+            padding: 1rem 1.2rem 1rem 1.2rem;
+            border-radius: 0 0 16px 16px;
+            box-shadow: 0 2px 16px 0 rgba(168,85,247,0.08);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-top: 1.5px solid rgba(255,255,255,0.35);
+            border-bottom: 1.5px solid rgba(255,255,255,0.18);
             transform: none;
-            transition: none;
-            margin-top: auto;
+            transition: background 0.3s, color 0.3s;
+            margin-top: 0;
+        }
+        .portfolio-info h4,
+        .portfolio-info p {
+            color: #222;
+            text-shadow: 0 1px 8px rgba(255,255,255,0.18);
         }
         .video-thumbnail, .shorts-thumbnail {
             width: 100%;
@@ -176,16 +187,123 @@
                 font-size: 0.92rem;
             }
         }
+        .background-balls {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .ball {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #a855f7cc, #6366f1cc 80%, #fff0 100%);
+            opacity: 0.18;
+            filter: blur(32px);
+            box-shadow: 0 0 80px 40px rgba(255,255,255,0.12);
+            will-change: transform;
+            border: 2px solid rgba(255,255,255,0.08);
+        }
+        .hero-title span {
+            opacity: 0;
+            display: inline-block;
+            transform: translateY(40px);
+            transition: all 0.6s cubic-bezier(.25,.8,.25,1);
+        }
+        .hero-title span.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .client-logo-glass {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 0.5rem;
+            padding: 12px 18px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.85);
+            border: 2.5px solid rgba(255,255,255,0.55);
+            box-shadow: 0 1.5px 0 0 rgba(255,255,255,0.18) inset;
+            backdrop-filter: blur(32px);
+            -webkit-backdrop-filter: blur(32px);
+            transition: border 0.3s, background 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .client-logo-glass::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            pointer-events: none;
+            border: 2.5px solid transparent;
+            background: linear-gradient(120deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.15) 40%, rgba(255,255,255,0.15) 60%, rgba(255,255,255,0.7) 100%);
+            -webkit-mask:
+                linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            z-index: 1;
+        }
+        .client-logo-glass:hover {
+            background: rgba(255,255,255,0.18);
+            border-color: rgba(255,255,255,0.85);
+        }
+        .client-logo-glass:hover .client-logo {
+            filter: none;
+            transform: scale(1.05);
+        }
+        .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.55);
+            border: none;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 2;
+            box-shadow: 0 2px 8px 0 rgba(0,0,0,0.18);
+            transition: background 0.2s, opacity 0.2s;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .play-btn:hover {
+            background: rgba(168,85,247,0.85);
+            color: #fff;
+        }
+        .portfolio-card:hover .play-btn {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .portfolio-card > div[style*="position:relative"] {
+            margin-bottom: 0;
+        }
+        .portfolio-card img.video-thumbnail,
+        .portfolio-card img.shorts-thumbnail {
+            margin-bottom: 0;
+            display: block;
+        }
     </style>
 </head>
 <body class="bg-black text-white overflow-x-hidden">
+    <!-- 움직이는 반투명 공 배경 -->
+    <div class="background-balls"></div>
+
     <!-- Header -->
     <header class="fixed top-0 left-0 right-0 z-50 glass-effect">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <div class="flex items-center">
-                    <h1 class="text-2xl font-bold accent-color">GRIGO</h1>
-                    <span class="ml-2 text-sm font-light">ENTERTAINMENT</span>
+                    <h1 class="text-2xl font-bold accent-color">AST</h1>
+                    <span class="ml-2 text-sm font-light">COMPANY</span>
                 </div>
                 <nav class="hidden md:flex space-x-8">
                     <a href="#home" class="hover:text-purple-400 transition-colors">Home</a>
@@ -204,16 +322,12 @@
     </header>
 
     <!-- Hero Section -->
-    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden" style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);">
+    <section id="home" class="flex items-center justify-center relative overflow-hidden" style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%); z-index:1; min-height: 60vh; height: 60vh;">
         <div class="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-purple-900/20"></div>
         <div class="relative z-10 text-center px-4 sm:px-6 lg:px-8">
-            <h1 class="text-5xl md:text-7xl font-bold mb-6">
-                <span class="block">CREATIVE</span>
-                <span class="block accent-color">CONTENT</span>
-                <span class="block">AGENCY</span>
-            </h1>
+            <h1 id="hero-title" class="text-5xl md:text-7xl font-bold mb-6 accent-color hero-title">Creative Content Agency</h1>
             <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto text-gray-300">
-                광고, 콘텐츠 사업을 기반으로 한 크리에이티브 에이전시
+                최적의 브랜딩과 마케팅을 위한 크리에이티브 에이전시
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="#portfolio" class="accent-bg text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition-opacity">VIEW PORTFOLIO</a>
@@ -221,6 +335,62 @@
             </div>
         </div>
     </section>
+    <script>
+    // 움직이는 공 애니메이션
+    const balls = [];
+    const colors = ['#a855f7cc', '#6366f1cc', '#f472b6cc', '#fbbf24cc'];
+    const container = document.querySelector('.background-balls');
+    const ballConfigs = [
+        { size: 420, left: 10, top: 10, color: colors[0] },
+        { size: 320, left: 60, top: 20, color: colors[1] },
+        { size: 350, left: 30, top: 60, color: colors[2] },
+        { size: 250, left: 70, top: 70, color: colors[3] }
+    ];
+    ballConfigs.forEach(cfg => {
+        const ball = document.createElement('div');
+        ball.className = 'ball';
+        ball.style.width = ball.style.height = cfg.size + 'px';
+        ball.style.left = cfg.left + '%';
+        ball.style.top = cfg.top + '%';
+        ball.style.background = `radial-gradient(circle at 30% 30%, ${cfg.color}, #fff0 100%)`;
+        container.appendChild(ball);
+        balls.push({
+            el: ball,
+            x: cfg.left,
+            y: cfg.top,
+            dx: (Math.random() - 0.5) * 0.03,
+            dy: (Math.random() - 0.5) * 0.03,
+        });
+    });
+    function animateBalls() {
+        balls.forEach(b => {
+            b.x += b.dx;
+            b.y += b.dy;
+            if (b.x < 0 || b.x > 80) b.dx *= -1;
+            if (b.y < 0 || b.y > 80) b.dy *= -1;
+            b.el.style.left = b.x + '%';
+            b.el.style.top = b.y + '%';
+        });
+        requestAnimationFrame(animateBalls);
+    }
+    animateBalls();
+    </script>
+    <script>
+    // SplitText 느낌의 히어로 텍스트 애니메이션
+    window.addEventListener('DOMContentLoaded', () => {
+        const el = document.getElementById('hero-title');
+        const text = el.textContent;
+        el.innerHTML = '';
+        text.split('').forEach((char, i) => {
+            const span = document.createElement('span');
+            span.textContent = char === ' ' ? '\u00A0' : char;
+            el.appendChild(span);
+            setTimeout(() => {
+                span.classList.add('visible');
+            }, 100 * i);
+        });
+    });
+    </script>
 
     <!-- About Section -->
     <section id="about" class="py-20" style="background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);">
@@ -259,7 +429,7 @@
         </div>
     </section>
 
-    <!-- Clients Section (기존 구조/데이터 유지) -->
+    <!-- Clients Section (글래스모피즘 적용) -->
     <section id="clients" class="py-16 px-6 bg-black">
         <div class="container mx-auto">
             <h3 class="text-3xl font-bold text-center mb-4">
@@ -269,66 +439,343 @@
             <!-- First Row -->
             <div class="scroll-container mb-6">
                 <div class="scroll-content">
-                    <img src="../ClientsLogo/Carmex.png" alt="Carmex" class="client-logo">
-                    <img src="../ClientsLogo/innisfree.png" alt="innisfree" class="client-logo">
-                    <img src="../ClientsLogo/클리오.png" alt="클리오" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1So91YR3zbe-Cmgcy9R69dur_lgr16JiC" alt="토스" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1_yC7ymkgOM0isDH7NT0ggP856KicxBwu" alt="아디다스" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1PtYJE0pGytbNbOz6Ls_dKlVjXW9adijv" alt="노스페이스" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1_9_tGtkveXx6uNHO4Ds38un-eTYXLAmQ" alt="다이슨" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1X768KIkGUZwnoJ-QI381_yE9om387Nv_" alt="레드불" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1DG2rSz34iVjmufI1s2oPejukvAsWZzpc" alt="3CE" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1yJnghXQkuyT14dmkPwMov-LM-TA_o_-q" alt="라네즈" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1SPMaKLJs8Ag7uRyeUbpNVyWRGzPV7jao" alt="설화수" class="client-logo">
+                    <div class="client-logo-glass"><img src="../ClientsLogo/3CE.png" alt="3CE" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/adidas.png" alt="adidas" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/AHC.png" alt="AHC" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/amorepercific.png" alt="amorepercific" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/aveeno.png" alt="aveeno" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/boh.png" alt="boh" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/Carmex.png" alt="Carmex" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/CJ-ENM.png" alt="CJ-ENM" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/COOPERS.png" alt="COOPERS" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/crocs.png" alt="crocs" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/dongwon.png" alt="dongwon" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/DYSON.png" alt="DYSON" class="client-logo"></div>
                 </div>
                 <div class="scroll-content">
-                    <img src="../ClientsLogo/Carmex.png" alt="Carmex" class="client-logo">
-                    <img src="../ClientsLogo/innisfree.png" alt="innisfree" class="client-logo">
-                    <img src="../ClientsLogo/클리오.png" alt="클리오" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1So91YR3zbe-Cmgcy9R69dur_lgr16JiC" alt="토스" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1_yC7ymkgOM0isDH7NT0ggP856KicxBwu" alt="아디다스" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1PtYJE0pGytbNbOz6Ls_dKlVjXW9adijv" alt="노스페이스" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1_9_tGtkveXx6uNHO4Ds38un-eTYXLAmQ" alt="다이슨" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1X768KIkGUZwnoJ-QI381_yE9om387Nv_" alt="레드불" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1DG2rSz34iVjmufI1s2oPejukvAsWZzpc" alt="3CE" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1yJnghXQkuyT14dmkPwMov-LM-TA_o_-q" alt="라네즈" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1SPMaKLJs8Ag7uRyeUbpNVyWRGzPV7jao" alt="설화수" class="client-logo">
+                    <div class="client-logo-glass"><img src="../ClientsLogo/espoir.png" alt="espoir" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/estherFomula.png" alt="estherFomula" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/evan_williams.png" alt="evan_williams" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/fredpizz.png" alt="fredpizz" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/GOOGLE.png" alt="GOOGLE" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/hanyool.png" alt="hanyool" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/harim.png" alt="harim" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/hite.png" alt="hite" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/Hollys.png" alt="Hollys" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/illiyoon.png" alt="illiyoon" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/innisfree.png" alt="innisfree" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/isoi.png" alt="isoi" class="client-logo"></div>
                 </div>
             </div>
             <!-- Second Row -->
             <div class="scroll-container">
                 <div class="scroll-content-reverse">
-                    <img src="https://drive.google.com/uc?export=view&id=1FUZLrUiLfBNMdy0b_AenPpF60Ypvwn-l" alt="미샤" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1szUF2jhFMSZirfGQthsaJv8FL32MoBba" alt="니베아" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1v2KcAPZyGBQJzZGs0IALrd6JDoJ-vOwK" alt="무신사" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1fLkBK_YCkio0gwQP9lsr3vV0aMRRhgMf" alt="CJ ENM" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1CvAy5h6aNsfqLzlqVeD2o-0ENdQHLLLo" alt="포스코" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1PvqALL3yZA-iZrXpKdxlbYmfykKUXhnM" alt="스탠리" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1Vqmd5gg7Zpc6ecuBtbBdNX-TPeHV3CsN" alt="크록스" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1XvJ5MRK7xml4ZqdpHR5wYkSSUxVle8U9" alt="MLB" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1s2lJ8bPxy90CgnXIWTKp96HTUmgfpfXv" alt="엘르" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1BZCCr5lHctYSF3Aq28jErz9AWh12sA-3" alt="BAZAAR" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1CX3nAZrubzpEE6-mgk9ifnPLjYkqYNyp" alt="AHC" class="client-logo">
+                    <div class="client-logo-glass"><img src="../ClientsLogo/kakao.png" alt="kakao" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/laneige.png" alt="laneige" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/LeadVault.png" alt="LeadVault" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/LG생활건강.png" alt="LG생활건강" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/locknlock.png" alt="locknlock" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/makeupforever.png" alt="makeupforever" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/MediHeal.png" alt="MediHeal" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/missenchen.png" alt="missenchen" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/missha.png" alt="missha" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/MLB.png" alt="MLB" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/montbest.png" alt="montbest" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/musinsa.png" alt="musinsa" class="client-logo"></div>
                 </div>
                 <div class="scroll-content-reverse">
-                    <img src="https://drive.google.com/uc?export=view&id=1FUZLrUiLfBNMdy0b_AenPpF60Ypvwn-l" alt="미샤" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1szUF2jhFMSZirfGQthsaJv8FL32MoBba" alt="니베아" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1v2KcAPZyGBQJzZGs0IALrd6JDoJ-vOwK" alt="무신사" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1fLkBK_YCkio0gwQP9lsr3vV0aMRRhgMf" alt="CJ ENM" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1CvAy5h6aNsfqLzlqVeD2o-0ENdQHLLLo" alt="포스코" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1PvqALL3yZA-iZrXpKdxlbYmfykKUXhnM" alt="스탠리" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1Vqmd5gg7Zpc6ecuBtbBdNX-TPeHV3CsN" alt="크록스" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1XvJ5MRK7xml4ZqdpHR5wYkSSUxVle8U9" alt="MLB" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1s2lJ8bPxy90CgnXIWTKp96HTUmgfpfXv" alt="엘르" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1BZCCr5lHctYSF3Aq28jErz9AWh12sA-3" alt="BAZAAR" class="client-logo">
-                    <img src="https://drive.google.com/uc?export=view&id=1CX3nAZrubzpEE6-mgk9ifnPLjYkqYNyp" alt="AHC" class="client-logo">
+                    <div class="client-logo-glass"><img src="../ClientsLogo/NIVEA.png" alt="NIVEA" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/NORTH-FACE.png" alt="NORTH-FACE" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/oiads.png" alt="oiads" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/posco.png" alt="posco" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/pple.png" alt="pple" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/RedBull.png" alt="RedBull" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/samsung.png" alt="samsung" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/samyang.png" alt="samyang" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/sandbox.png" alt="sandbox" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/shark.png" alt="shark" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/skinfood.png" alt="skinfood" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/snuggle.png" alt="snuggle" class="client-logo"></div>
+                </div>
+                <div class="scroll-content-reverse">
+                    <div class="client-logo-glass"><img src="../ClientsLogo/stanley.png" alt="stanley" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/sulwhasoo.png" alt="sulwhasoo" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/the-hyundai.png" alt="the-hyundai" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/TheLabByBlang.png" alt="TheLabByBlang" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/tiptoe.png" alt="tiptoe" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/toss.png" alt="toss" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/tsingtao.png" alt="tsingtao" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/uber.png" alt="uber" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/경주시.png" alt="경주시" class="client-logo"></div>
+                    <div class="client-logo-glass"><img src="../ClientsLogo/클리오.png" alt="클리오" class="client-logo"></div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Portfolio Section (기존 구조/데이터 유지) -->
-    <!-- 이하 기존 코드 동일하게 유지 -->
-    <!-- ... 기존 코드 생략 ... -->
+    <section id="portfolio" class="py-16 px-6" style="background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);">
+        <div class="container mx-auto">
+            <h3 class="text-3xl font-bold text-center mb-4">
+                <span class="text-purple-400">PORTFOLIO</span>
+            </h3>
+            <p class="text-gray-400 text-center mb-12">진행 사례</p>
+            <!-- Tabs -->
+            <div class="flex justify-center space-x-4 mb-12">
+                <button class="tab-button active" onclick="showTab('all')"><span>모두보기</span></button>
+                <button class="tab-button" onclick="showTab('brand-films')"><span>브랜드필름</span></button>
+                <button class="tab-button" onclick="showTab('branded-content')"><span>브랜디드/PPL콘텐츠</span></button>
+                <button class="tab-button" onclick="showTab('short-form')"><span>숏폼</span></button>
+            </div>
+            <!-- All Tab -->
+            <div id="all" class="tab-content">
+                <div class="zigzag-grid">
+                    <!-- 브랜드 필름 -->
+                    <div class="portfolio-card">
+                        <div style="position:relative;">
+                            <img src="https://img.youtube.com/vi/3-PHZktUCl0/maxresdefault.jpg" alt="더현대 X Peer" class="video-thumbnail">
+                            <button class="play-btn" onclick="openVideo('https://youtu.be/3-PHZktUCl0', event)"><i class="fas fa-play"></i></button>
+                        </div>
+                        <div class="portfolio-overlay"></div>
+                        <div class="portfolio-info">
+                            <h4 class="text-xl font-bold mb-2">더현대 X Peer</h4>
+                            <p class="text-gray-300 mb-2">With. 1Million Dance Studio</p>
+                        </div>
+                    </div>
+                    <!-- 브랜디드/PPL -->
+                    <div class="portfolio-card">
+                        <div style="position:relative;">
+                            <img src="https://img.youtube.com/vi/TqCtNNBShec/maxresdefault.jpg" alt="디바마을 퀸가비 EP.43" class="video-thumbnail">
+                            <button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=TqCtNNBShec', event)"><i class="fas fa-play"></i></button>
+                        </div>
+                        <div class="portfolio-overlay"></div>
+                        <div class="portfolio-info">
+                            <h4 class="text-xl font-bold mb-2">디바마을 퀸가비 EP.43</h4>
+                            <p class="text-gray-300 mb-2">[에스더포뮬러]</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-card">
+                        <div style="position:relative;">
+                            <img src="https://img.youtube.com/vi/Q-Ldxlm6FiM/maxresdefault.jpg" alt="대세갑이주 EP21" class="video-thumbnail">
+                            <button class="play-btn" onclick="openVideo('https://youtu.be/Q-Ldxlm6FiM', event)"><i class="fas fa-play"></i></button>
+                        </div>
+                        <div class="portfolio-overlay"></div>
+                        <div class="portfolio-info">
+                            <h4 class="text-xl font-bold mb-2">대세갑이주🏠 | EP21</h4>
+                            <p class="text-gray-300 mb-2">[칭따오]</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-card">
+                        <div style="position:relative;">
+                            <img src="https://img.youtube.com/vi/sCy1ig1jhYM/maxresdefault.jpg" alt="디바마을 퀸가비 EP41" class="video-thumbnail">
+                            <button class="play-btn" onclick="openVideo('https://youtu.be/sCy1ig1jhYM', event)"><i class="fas fa-play"></i></button>
+                        </div>
+                        <div class="portfolio-overlay"></div>
+                        <div class="portfolio-info">
+                            <h4 class="text-xl font-bold mb-2">디바마을 퀸가비👑 | EP41</h4>
+                            <p class="text-gray-300 mb-2">[동원 F&B]</p>
+                        </div>
+                    </div>
+                    <!-- 숏폼 -->
+                    <div class="portfolio-card">
+                        <div style="position:relative;">
+                            <img src="https://img.youtube.com/vi/wefpgV8Aigg/maxresdefault.jpg" alt="룰루레몬 브랜드 캠페인" class="shorts-thumbnail">
+                            <button class="play-btn" onclick="openVideo('https://www.youtube.com/shorts/wefpgV8Aigg', event)"><i class="fas fa-play"></i></button>
+                        </div>
+                        <div class="portfolio-overlay"></div>
+                        <div class="portfolio-info">
+                            <h4 class="text-lg font-bold mb-2">룰루레몬 브랜드 캠페인</h4>
+                            <p class="text-gray-300 mb-2">With. Kayday</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-card">
+                        <div style="position:relative;">
+                            <img src="https://img.youtube.com/vi/R1cTULvmmy0/maxresdefault.jpg" alt="룰루레몬 브랜드 캠페인" class="shorts-thumbnail">
+                            <button class="play-btn" onclick="openVideo('https://www.youtube.com/shorts/R1cTULvmmy0', event)"><i class="fas fa-play"></i></button>
+                        </div>
+                        <div class="portfolio-overlay"></div>
+                        <div class="portfolio-info">
+                            <h4 class="text-lg font-bold mb-2">룰루레몬 브랜드 캠페인</h4>
+                            <p class="text-gray-300 mb-2">With. Simeez</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Brand Films Tab -->
+            <div id="brand-films" class="tab-content hidden">
+                <div class="zigzag-grid">
+                    <div class="portfolio-card">
+                        <div style="position:relative;">
+                            <img src="https://img.youtube.com/vi/3-PHZktUCl0/maxresdefault.jpg" alt="더현대 X Peer" class="video-thumbnail">
+                            <button class="play-btn" onclick="openVideo('https://youtu.be/3-PHZktUCl0', event)"><i class="fas fa-play"></i></button>
+                        </div>
+                        <div class="portfolio-overlay"></div>
+                        <div class="portfolio-info">
+                            <h4 class="text-xl font-bold mb-2">더현대 X Peer</h4>
+                            <p class="text-gray-300 mb-2">With. 1Million Dance Studio</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Branded Content Tab -->
+            <div id="branded-content" class="tab-content hidden">
+                <div class="zigzag-grid">
+                    <div class="portfolio-card">
+                        <div style="position:relative;">
+                            <img src="https://img.youtube.com/vi/TqCtNNBShec/maxresdefault.jpg" alt="디바마을 퀸가비 EP.43" class="video-thumbnail">
+                            <button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=TqCtNNBShec', event)"><i class="fas fa-play"></i></button>
+                        </div>
+                        <div class="portfolio-overlay"></div>
+                        <div class="portfolio-info">
+                            <h4 class="text-xl font-bold mb-2">디바마을 퀸가비 EP.43</h4>
+                            <p class="text-gray-300 mb-2">[에스더포뮬러]</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-card">
+                        <div style="position:relative;">
+                            <img src="https://img.youtube.com/vi/Q-Ldxlm6FiM/maxresdefault.jpg" alt="대세갑이주 EP21" class="video-thumbnail">
+                            <button class="play-btn" onclick="openVideo('https://youtu.be/Q-Ldxlm6FiM', event)"><i class="fas fa-play"></i></button>
+                        </div>
+                        <div class="portfolio-overlay"></div>
+                        <div class="portfolio-info">
+                            <h4 class="text-xl font-bold mb-2">대세갑이주🏠 | EP21</h4>
+                            <p class="text-gray-300 mb-2">[칭따오]</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-card">
+                        <div style="position:relative;">
+                            <img src="https://img.youtube.com/vi/sCy1ig1jhYM/maxresdefault.jpg" alt="디바마을 퀸가비 EP41" class="video-thumbnail">
+                            <button class="play-btn" onclick="openVideo('https://youtu.be/sCy1ig1jhYM', event)"><i class="fas fa-play"></i></button>
+                        </div>
+                        <div class="portfolio-overlay"></div>
+                        <div class="portfolio-info">
+                            <h4 class="text-xl font-bold mb-2">디바마을 퀸가비👑 | EP41</h4>
+                            <p class="text-gray-300 mb-2">[동원 F&B]</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Short Form Tab -->
+            <div id="short-form" class="tab-content hidden">
+                <div class="shorts-grid">
+                    <div class="portfolio-card">
+                        <div style="position:relative;">
+                            <img src="https://img.youtube.com/vi/wefpgV8Aigg/maxresdefault.jpg" alt="룰루레몬 브랜드 캠페인" class="shorts-thumbnail">
+                            <button class="play-btn" onclick="openVideo('https://www.youtube.com/shorts/wefpgV8Aigg', event)"><i class="fas fa-play"></i></button>
+                        </div>
+                        <div class="portfolio-overlay"></div>
+                        <div class="portfolio-info">
+                            <h4 class="text-lg font-bold mb-2">룰루레몬 브랜드 캠페인</h4>
+                            <p class="text-gray-300 mb-2">With. Kayday</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-card">
+                        <div style="position:relative;">
+                            <img src="https://img.youtube.com/vi/R1cTULvmmy0/maxresdefault.jpg" alt="룰루레몬 브랜드 캠페인" class="shorts-thumbnail">
+                            <button class="play-btn" onclick="openVideo('https://www.youtube.com/shorts/R1cTULvmmy0', event)"><i class="fas fa-play"></i></button>
+                        </div>
+                        <div class="portfolio-overlay"></div>
+                        <div class="portfolio-info">
+                            <h4 class="text-lg font-bold mb-2">룰루레몬 브랜드 캠페인</h4>
+                            <p class="text-gray-300 mb-2">With. Simeez</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="bg-black py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">
+                    GET IN <span class="accent-color">TOUCH</span>
+                </h2>
+                <p class="text-xl text-gray-300">프로젝트 문의는 언제든지 환영합니다</p>
+            </div>
+            <div class="max-w-2xl mx-auto">
+                <div class="flex flex-col items-center justify-center gap-8 p-8 glass-effect rounded-2xl">
+                    <h3 class="text-2xl font-semibold mb-4">연락처 정보</h3>
+                    <div class="space-y-4 text-lg">
+                        <div class="flex items-center justify-center">
+                            <i class="fas fa-envelope text-purple-400 text-xl mr-4"></i>
+                            <span>contact@astcompany.co.kr</span>
+                        </div>
+                        <div class="flex items-center justify-center">
+                            <i class="fas fa-phone text-purple-400 text-xl mr-4"></i>
+                            <span>010-0000-0000</span>
+                        </div>
+                        <div class="flex items-center justify-center">
+                            <i class="fas fa-map-marker-alt text-purple-400 text-xl mr-4"></i>
+                            <span>서울특별시 서대문구 연희동 4-1</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="flex items-center justify-center mb-4">
+                    <h3 class="text-2xl font-bold accent-color">AST</h3>
+                    <span class="ml-2 text-sm font-light">COMPANY</span>
+                </div>
+                <p class="text-gray-400 mb-4">Creative Content Agency</p>
+                <div class="flex justify-center space-x-6">
+                    <a href="https://instagram.com/ast__company" class="text-gray-400 hover:text-purple-400 transition-colors">
+                        <i class="fab fa-instagram text-2xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-purple-400 transition-colors">
+                        <i class="fab fa-youtube text-2xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-purple-400 transition-colors">
+                        <i class="fab fa-linkedin text-2xl"></i>
+                    </a>
+                </div>
+                <p class="text-gray-500 text-sm mt-8">© 2024 ASTCOMPANY. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.add('hidden');
+            });
+            // Remove active class from all buttons
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+            // Show selected tab content
+            document.getElementById(tabName).classList.remove('hidden');
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+        function openVideo(url, e) {
+            if(e) e.stopPropagation();
+            window.open(url, '_blank');
+        }
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+
 </body>
 </html> 
