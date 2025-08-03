@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <style>
         * {
             font-family: 'Poppins', 'Inter', sans-serif;
@@ -186,6 +187,17 @@
                 padding: 0.7rem 0.3rem;
                 font-size: 0.92rem;
             }
+            .about-3col > div h3 {
+                white-space: nowrap;
+                font-size: 0.9rem;
+                margin-bottom: 0.5rem;
+            }
+            .about-3col > div p {
+                font-size: 0.8rem;
+                line-height: 1.4;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+            }
         }
         .background-balls {
             position: fixed;
@@ -291,6 +303,119 @@
             margin-bottom: 0;
             display: block;
         }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+        }
+        
+        .modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            margin: 2% auto;
+            padding: 1.5rem;
+            border-radius: 16px;
+            width: 85%;
+            max-width: 450px;
+            position: relative;
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            right: 1rem;
+            top: 0.5rem;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .modal-form {
+            margin-top: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #000;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            color: #000;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+            color: white;
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+        }
+        
+        .partner-image {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .partner-image:hover {
+            transform: scale(1.02);
+        }
+        
+        @media (max-width: 640px) {
+            .modal-content {
+                margin: 5% auto;
+                padding: 1rem;
+                width: 90%;
+                max-height: 80vh;
+                overflow-y: auto;
+            }
+        }
     </style>
 </head>
 <body class="bg-black text-white overflow-x-hidden">
@@ -321,7 +446,7 @@
     </header>
 
     <!-- Hero Section -->
-    <section id="home" class="flex items-center justify-center relative overflow-hidden" style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%); z-index:1; min-height: 60vh; height: 60vh;">
+    <section id="home" class="flex items-center justify-center relative overflow-hidden pt-20" style="background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%); z-index:1; min-height: 60vh; height: 60vh;">
         <div class="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-purple-900/20"></div>
         <div class="relative z-10 text-center px-4 sm:px-6 lg:px-8">
             <h1 id="hero-title" class="text-2xl md:text-5xl font-bold mb-6 accent-color hero-title">브랜드를 콘텐츠로 세상과 연결하다</h1>
@@ -405,21 +530,21 @@
             <div class="about-3col">
                 <div class="glass-effect p-8 rounded-2xl">
                     <div class="accent-color text-4xl mb-4">
-                        <i class="fas fa-video"></i>
+                        <i data-lucide="video" class="w-12 h-12"></i>
                     </div>
                     <h3 class="text-xl font-semibold mb-4">콘텐츠 제작</h3>
                     <p class="text-gray-300">브랜드의 가치를 담은 고품질 영상 콘텐츠를 제작합니다.</p>
                 </div>
                 <div class="glass-effect p-8 rounded-2xl">
                     <div class="accent-color text-4xl mb-4">
-                        <i class="fas fa-bullhorn"></i>
+                        <i data-lucide="megaphone" class="w-12 h-12"></i>
                     </div>
                     <h3 class="text-xl font-semibold mb-4">광고 캠페인</h3>
                     <p class="text-gray-300">효과적인 광고 전략으로 브랜드의 인지도를 높입니다.</p>
                 </div>
                 <div class="glass-effect p-8 rounded-2xl">
                     <div class="accent-color text-4xl mb-4">
-                        <i class="fas fa-users"></i>
+                        <i data-lucide="users" class="w-12 h-12"></i>
                     </div>
                     <h3 class="text-xl font-semibold mb-4">브랜드 매니지먼트</h3>
                     <p class="text-gray-300">종합적인 브랜드 관리 서비스를 제공합니다.</p>
@@ -436,35 +561,35 @@
           <div class="flex flex-col items-center gap-8">
             <div class="w-full max-w-full">
                 <div class="text-xl font-bold text-white mb-2">가비 걸 GABEE GIRL</div>
-                <img src="PartnerChannel/gabee.jpg" alt="가비 걸" class="w-full rounded-lg shadow-md"/>
+                <img src="PartnerChannel/gabee.jpg" alt="가비 걸" class="w-full rounded-lg shadow-md partner-image" onclick="openPartnerModal('가비 걸 GABEE GIRL')"/>
             </div>
             <div class="w-full max-w-full">
                 <div class="text-xl font-bold text-white mb-2">유난히 빛이나</div>
-                <img src="PartnerChannel/yuna.jpg" alt="유난히 빛이나" class="w-full rounded-lg shadow-md"/>
+                <img src="PartnerChannel/yuna.jpg" alt="유난히 빛이나" class="w-full rounded-lg shadow-md partner-image" onclick="openPartnerModal('유난히 빛이나')"/>
             </div>
             <div class="w-full max-w-full">
                 <div class="text-xl font-bold text-white mb-2">할인광<br>조정민의 조짜르트</div>
-                <img src="PartnerChannel/solomon.jpg" alt="솔코" class="w-full rounded-lg shadow-md"/>
+                <img src="PartnerChannel/solomon.jpg" alt="솔코" class="w-full rounded-lg shadow-md partner-image" onclick="openPartnerModal('할인광 조정민의 조짜르트')"/>
             </div>
             <div class="w-full max-w-full">
                 <div class="text-xl font-bold text-white mb-2">IBUKI IMATA</div>
-                <img src="PartnerChannel/ibuki2.png" alt="IBUKI" class="w-full rounded-lg shadow-md"/>
+                <img src="PartnerChannel/ibuki2.png" alt="IBUKI" class="w-full rounded-lg shadow-md partner-image" onclick="openPartnerModal('IBUKI IMATA')"/>
             </div>
             <div class="w-full max-w-full">
                 <div class="text-xl font-bold text-white mb-2">런민지</div>
-                <img src="PartnerChannel/minji.jpg" alt="런민지" class="w-full rounded-lg shadow-md"/>
+                <img src="PartnerChannel/minji.jpg" alt="런민지" class="w-full rounded-lg shadow-md partner-image" onclick="openPartnerModal('런민지')"/>
             </div>
             <div class="w-full max-w-full">
                 <div class="text-xl font-bold text-white mb-2">한끼오천원</div>
-                <img src="PartnerChannel/hankki.jpg" alt="한끼오천원" class="w-full rounded-lg shadow-md"/>
+                <img src="PartnerChannel/hankki.jpg" alt="한끼오천원" class="w-full rounded-lg shadow-md partner-image" onclick="openPartnerModal('한끼오천원')"/>
             </div>
             <div class="w-full max-w-full">
                 <div class="text-xl font-bold text-white mb-2">호주타잔Modern tarzan</div>
-                <img src="PartnerChannel/tarzan.jpg" alt="호주타잔" class="w-full rounded-lg shadow-md"/>
+                <img src="PartnerChannel/tarzan.jpg" alt="호주타잔" class="w-full rounded-lg shadow-md partner-image" onclick="openPartnerModal('호주타잔Modern tarzan')"/>
             </div>
             <div class="w-full max-w-full">
                 <div class="text-xl font-bold text-white mb-2">돈득하게 KwonTwins </div>
-                <img src="PartnerChannel/kwontwins.jpg" alt="권트윈스" class="w-full rounded-lg shadow-md"/>
+                <img src="PartnerChannel/kwontwins.jpg" alt="권트윈스" class="w-full rounded-lg shadow-md partner-image" onclick="openPartnerModal('돈득하게 KwonTwins')"/>
             </div>
         </div>
     </section>
@@ -862,7 +987,75 @@
         </div>
     </footer>
 
+    <!-- Partner Channel Modal -->
+    <div id="partnerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closePartnerModal()">&times;</span>
+            <h2 class="text-2xl font-bold mb-4 text-center" style="color: #000;">파트너 채널 문의</h2>
+            <form class="modal-form" id="partnerForm">
+                <div class="form-group">
+                    <label for="inquiryChannel">문의 채널</label>
+                    <input type="text" id="inquiryChannel" name="inquiryChannel" required>
+                </div>
+                <div class="form-group">
+                    <label for="inquiryType">문의 구분</label>
+                    <select id="inquiryType" name="inquiryType" required>
+                        <option value="">선택해주세요</option>
+                        <option value="브랜디드">브랜디드</option>
+                        <option value="PPL">PPL</option>
+                        <option value="기타 캠페인 문의">기타 캠페인 문의</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="title">제목</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="contact">연락처 (전화번호 또는 이메일주소)</label>
+                    <input type="text" id="contact" name="contact" required>
+                </div>
+                <div class="form-group">
+                    <label for="content">내용</label>
+                    <textarea id="content" name="content" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">제출하기</button>
+            </form>
+        </div>
+    </div>
+
     <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+        
+        // Partner Channel Modal Functions
+        function openPartnerModal(channelName) {
+            document.getElementById('partnerModal').style.display = 'block';
+            // Pre-fill the inquiry channel field with the clicked channel name
+            document.getElementById('inquiryChannel').value = channelName || '';
+        }
+        
+        function closePartnerModal() {
+            document.getElementById('partnerModal').style.display = 'none';
+            document.getElementById('partnerForm').reset();
+        }
+        
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('partnerModal');
+            if (event.target === modal) {
+                closePartnerModal();
+            }
+        }
+        
+        // Handle form submission
+        document.getElementById('partnerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Here you can add the logic to handle form submission
+            // For now, we'll just show an alert and close the modal
+            alert('문의가 성공적으로 제출되었습니다!');
+            closePartnerModal();
+        });
+        
         function showTab(tabName) {
             // Hide all tab contents
             const tabContents = document.querySelectorAll('.tab-content');
