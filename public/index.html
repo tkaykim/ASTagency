@@ -416,6 +416,89 @@
                 overflow-y: auto;
             }
         }
+        
+        /* Multi-select Dropdown Styles */
+        .multiselect-dropdown {
+            position: relative;
+            width: 100%;
+        }
+        
+        .multiselect-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            background-color: white;
+            cursor: pointer;
+            color: #000;
+            font-weight: 500;
+        }
+        
+        .multiselect-header:hover {
+            border-color: #a855f7;
+        }
+        
+        .dropdown-arrow {
+            font-size: 0.75rem;
+            transition: transform 0.2s;
+        }
+        
+        .multiselect-dropdown.open .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+        
+        .multiselect-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: white;
+            border: 1px solid #d1d5db;
+            border-top: none;
+            border-radius: 0 0 0.5rem 0.5rem;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .multiselect-dropdown.open .multiselect-options {
+            display: block;
+        }
+        
+        .multiselect-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            cursor: pointer;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .multiselect-option:last-child {
+            border-bottom: none;
+        }
+        
+        .multiselect-option:hover {
+            background-color: #f9fafb;
+        }
+        
+        .multiselect-option input[type="checkbox"] {
+            width: auto;
+            accent-color: #a855f7;
+        }
+        
+        .multiselect-option label {
+            margin: 0;
+            font-weight: 500;
+            color: #000;
+            cursor: pointer;
+            line-height: 1.4;
+            flex: 1;
+        }
     </style>
 </head>
 <body class="bg-black text-white overflow-x-hidden">
@@ -997,15 +1080,41 @@
                     <label for="inquiryChannel">문의 채널</label>
                     <input type="text" id="inquiryChannel" name="inquiryChannel" required>
                 </div>
-                <div class="form-group">
-                    <label for="inquiryType">문의 구분</label>
-                    <select id="inquiryType" name="inquiryType" required>
-                        <option value="">선택해주세요</option>
-                        <option value="브랜디드">브랜디드</option>
-                        <option value="PPL">PPL</option>
-                        <option value="기타 캠페인 문의">기타 캠페인 문의</option>
-                    </select>
+                        <div class="form-group">
+            <label for="inquiryType">문의 구분</label>
+            <div class="multiselect-dropdown">
+                <div class="multiselect-header" onclick="toggleMultiselect()">
+                    <span id="multiselect-display">선택해주세요</span>
+                    <span class="dropdown-arrow">▼</span>
                 </div>
+                <div class="multiselect-options" id="multiselect-options">
+                    <div class="multiselect-option">
+                        <input type="checkbox" id="inquiryType1" value="광고 섭외(TVC, 전매체, 전속모델 등)">
+                        <label for="inquiryType1">광고 섭외(TVC, 전매체, 전속모델 등)</label>
+                    </div>
+                    <div class="multiselect-option">
+                        <input type="checkbox" id="inquiryType2" value="유튜브">
+                        <label for="inquiryType2">유튜브</label>
+                    </div>
+                    <div class="multiselect-option">
+                        <input type="checkbox" id="inquiryType3" value="인스타그램">
+                        <label for="inquiryType3">인스타그램</label>
+                    </div>
+                    <div class="multiselect-option">
+                        <input type="checkbox" id="inquiryType4" value="행사 초청">
+                        <label for="inquiryType4">행사 초청</label>
+                    </div>
+                    <div class="multiselect-option">
+                        <input type="checkbox" id="inquiryType5" value="신규 캠페인 기획">
+                        <label for="inquiryType5">신규 캠페인 기획</label>
+                    </div>
+                    <div class="multiselect-option">
+                        <input type="checkbox" id="inquiryType6" value="기타 문의">
+                        <label for="inquiryType6">기타 문의</label>
+                    </div>
+                </div>
+            </div>
+        </div>
                 <div class="form-group">
                     <label for="title">제목</label>
                     <input type="text" id="title" name="title" required>
@@ -1016,7 +1125,7 @@
                 </div>
                 <div class="form-group">
                     <label for="content">내용</label>
-                    <textarea id="content" name="content" required></textarea>
+                    <textarea id="content" name="content" placeholder="[콘텐츠 유형, 예산, 원하시는 일정 등 세부 사항을 기입해주세요.]" required></textarea>
                 </div>
                 <button type="submit" class="submit-btn">제출하기</button>
             </form>
@@ -1026,6 +1135,41 @@
     <script>
         // Initialize Lucide Icons
         lucide.createIcons();
+        
+        // Multi-select dropdown functionality
+        function toggleMultiselect() {
+            const dropdown = document.querySelector('.multiselect-dropdown');
+            dropdown.classList.toggle('open');
+            updateMultiselectDisplay();
+        }
+        
+        function updateMultiselectDisplay() {
+            const checkboxes = document.querySelectorAll('#multiselect-options input[type="checkbox"]:checked');
+            const display = document.getElementById('multiselect-display');
+            
+            if (checkboxes.length === 0) {
+                display.textContent = '선택해주세요';
+            } else if (checkboxes.length === 1) {
+                display.textContent = checkboxes[0].value;
+            } else {
+                display.textContent = `${checkboxes.length}개 선택됨`;
+            }
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.querySelector('.multiselect-dropdown');
+            if (!dropdown.contains(event.target)) {
+                dropdown.classList.remove('open');
+            }
+        });
+        
+        // Handle checkbox changes
+        document.addEventListener('change', function(event) {
+            if (event.target.matches('#multiselect-options input[type="checkbox"]')) {
+                updateMultiselectDisplay();
+            }
+        });
         
         // Partner Channel Modal Functions
         function openPartnerModal(channelName) {
@@ -1050,10 +1194,63 @@
         // Handle form submission
         document.getElementById('partnerForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            // Here you can add the logic to handle form submission
-            // For now, we'll just show an alert and close the modal
-            alert('문의가 성공적으로 제출되었습니다!');
-            closePartnerModal();
+            
+            // Get form data
+            const formData = new FormData(e.target);
+            const inquiryChannel = formData.get('inquiryChannel');
+            
+            // Get selected checkboxes for inquiry type from multi-select dropdown
+            const selectedCheckboxes = document.querySelectorAll('#multiselect-options input[type="checkbox"]:checked');
+            const inquiryTypes = Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
+            const inquiryType = inquiryTypes.join(', ');
+            
+            const title = formData.get('title');
+            const contact = formData.get('contact');
+            const content = formData.get('content');
+            
+            // Show loading state
+            const submitBtn = e.target.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = '제출 중...';
+            submitBtn.disabled = true;
+            
+            // Prepare data for Google App Script
+            const formDataObj = {
+                inquiryChannel: inquiryChannel,
+                inquiryType: inquiryType,
+                title: title,
+                contact: contact,
+                content: content,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Google App Script web app URL
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbyZZ6exHsa5Q6CEqD94FUYOCxfAg2yIsDCrhvwv8EmnXuyIADfB61mArqY4YRJg7cR7rA/exec';
+            
+            // Send data to Google App Script
+            fetch(scriptUrl, {
+                method: 'POST',
+                mode: 'no-cors', // Required for Google App Script
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formDataObj)
+            })
+            .then(response => {
+                // Since we're using no-cors, we can't read the response
+                // But we can assume success if no error is thrown
+                alert('문의가 성공적으로 제출되었습니다!');
+                closePartnerModal();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('문의 제출 중 오류가 발생했습니다. 다시 시도해주세요.');
+            })
+            .finally(() => {
+                // Restore button state
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
         });
         
         function showTab(tabName) {
