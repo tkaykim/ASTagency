@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ojo Gang | 오죠갱 섭외 - AST Company | 아스트 컴퍼니</title>
+    <meta name="description" content="Ojo Gang 오죠갱 섭외 문의는 AST Company로 연락하세요. Ibuki, Kyoka, Minami, Uwa, Junna, Ruu, Hana 멤버들과 함께하는 브랜드 행사, 광고 캠페인, 콘텐츠 제작을 진행합니다.">
+    <meta name="keywords" content="오죠갱, Ojo Gang, 오죠갱 섭외, 이부키, 쿄카, 미나미, 우와, 쥰나, 루, 하나, Ibuki, Kyoka, Minami, Uwa, Junna, Ruu, Hana, AST Company, 아스트 컴퍼니, 행사 섭외, 광고 캠페인, 월드오브스트릿우먼파이터, 스우파">
+    <link rel="canonical" href="https://astcompany.co.kr/seo-pages/ojo-gang-seo.html">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', 'Inter', sans-serif;
+        }
+        .member-card {
+            transition: all 0.3s ease;
+        }
+        .member-card:hover {
+            transform: translateY(-5px);
+        }
+        .contact-btn {
+            transition: all 0.3s ease;
+        }
+        .contact-btn:hover {
+            transform: scale(1.05);
+        }
+        .member-info {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Contact Modal -->
+    <div id="partnerModal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
+        <div class="modal-content" style="background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 90%; max-width: 500px; border-radius: 10px; position: relative;">
+            <span class="close" onclick="closePartnerModal()" style="color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer;">&times;</span>
+            <h2 style="color: #000; margin-bottom: 20px; font-size: 24px; font-weight: bold;">CONTACT</h2>
+            
+            <form id="partnerForm" class="modal-form">
+                <div class="form-group">
+                    <label style="color: #000; display: block; margin-bottom: 5px; font-weight: 500;">문의 채널</label>
+                    <input type="text" id="inquiryChannel" name="inquiryChannel" required style="color: #000; width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 15px;">
+                </div>
+                
+                <div class="form-group">
+                    <label style="color: #000; display: block; margin-bottom: 5px; font-weight: 500;">문의 구분</label>
+                    <div class="multiselect-dropdown" style="position: relative; width: 100%;">
+                        <div class="multiselect-header" onclick="toggleMultiselect()" style="border: 1px solid #ddd; padding: 10px; border-radius: 5px; cursor: pointer; background: white; display: flex; justify-content: space-between; align-items: center;">
+                            <span id="multiselectDisplay" style="color: #000;">선택해주세요</span>
+                            <span class="dropdown-arrow" style="color: #000;">▼</span>
+                        </div>
+                        <div class="multiselect-options" id="multiselectOptions" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ddd; border-top: none; border-radius: 0 0 5px 5px; z-index: 1000; max-height: 200px; overflow-y: auto;">
+                            <div class="multiselect-option">
+                                <input type="checkbox" value="광고 섭외(TVC, 전매체, 전속모델 등)" id="option1">
+                                <label for="option1" style="color: #000; margin-left: 5px;">광고 섭외(TVC, 전매체, 전속모델 등)</label>
+                            </div>
+                            <div class="multiselect-option">
+                                <input type="checkbox" value="유튜브" id="option2">
+                                <label for="option2" style="color: #000; margin-left: 5px;">유튜브</label>
+                            </div>
+                            <div class="multiselect-option">
+                                <input type="checkbox" value="인스타그램" id="option3">
+                                <label for="option3" style="color: #000; margin-left: 5px;">인스타그램</label>
+                            </div>
+                            <div class="multiselect-option">
+                                <input type="checkbox" value="행사 초청" id="option4">
+                                <label for="option4" style="color: #000; margin-left: 5px;">행사 초청</label>
+                            </div>
+                            <div class="multiselect-option">
+                                <input type="checkbox" value="신규 캠페인 기획" id="option5">
+                                <label for="option5" style="color: #000; margin-left: 5px;">신규 캠페인 기획</label>
+                            </div>
+                            <div class="multiselect-option">
+                                <input type="checkbox" value="기타 문의" id="option6">
+                                <label for="option6" style="color: #000; margin-left: 5px;">기타 문의</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label style="color: #000; display: block; margin-bottom: 5px; font-weight: 500;">제목</label>
+                    <input type="text" id="inquiryTitle" name="inquiryTitle" required style="color: #000; width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 15px;">
+                </div>
+                
+                <div class="form-group">
+                    <label style="color: #000; display: block; margin-bottom: 5px; font-weight: 500;">연락처</label>
+                    <input type="text" id="inquiryContact" name="inquiryContact" placeholder="전화번호 또는 이메일주소" required style="color: #000; width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 15px;">
+                </div>
+                
+                <div class="form-group">
+                    <label style="color: #000; display: block; margin-bottom: 5px; font-weight: 500;">내용</label>
+                    <textarea id="inquiryContent" name="inquiryContent" rows="4" placeholder="[콘텐츠 유형, 예산, 원하시는 일정 등 세부 사항을 기입해주세요.]" required style="color: #000; width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 20px; resize: vertical;"></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn" style="background-color: #2563eb; color: white; padding: 12px 24px; border: none; border-radius: 5px; cursor: pointer; width: 100%; font-size: 16px; font-weight: 500;">제출하기</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-6xl mx-auto">
+            <!-- Team Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold text-gray-800 mb-4">OSAKA Ojo Gang</h1>
+                <p class="text-xl text-gray-600 mb-8">일본 오사카 출신의 댄스 크루</p>
+                
+                <!-- Team Image and Logo -->
+                <div class="flex justify-center items-center gap-8 mb-8">
+                    <div class="text-center">
+                        <img src="https://i.namu.wiki/i/pClUqq6km97wVMmw-RKBroQ_1Jr65CcLf9h-3ajR8Ez5Dl55AU2m2sQ-nIuEr_DL-a73mCyeEF0gEJLPDl0BByXLymN4kYCM4UfTPAFsFg63CKQr1UcE8Zyc-ErJyoi7n_lH61C-yj4CV-LhHmAZAw.webp" 
+                             alt="Ojo Gang Team" 
+                             class="w-64 h-64 object-cover rounded-lg shadow-lg mb-4">
+                        <button onclick="openPartnerModal('Ojo Gang 팀')" 
+                                class="contact-btn bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                            팀 문의하기
+                        </button>
+                    </div>
+                    <div class="text-center">
+                        <img src="https://i.namu.wiki/i/vgHY6_CnNdo-5o8o4NDNXUYWrQ2OFW7ne_iwyS2-PaojklhOT0SC4INyUTBV1cIpWdrvRTxsUSgTmeHMKjOu5nUQYIs6X4JLbztXt8BjlgikQLdKU7euclk0xRI1-J_UiZOPiUMLMhJ3M2yFwqxnOg.svg" 
+                             alt="Ojo Gang Logo" 
+                             class="w-32 h-32 object-contain">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Description -->
+            <div class="bg-white rounded-lg shadow-md p-8 mb-12">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Ojo Gang 소개</h2>
+                <p class="text-gray-600 leading-relaxed mb-6">
+                    Ojo Gang은 월드 오브 스트리트 우먼 파이터에서 활약하는 최고의 팀입니다. 
+                    각 멤버들의 독특한 개성과 뛰어난 실력으로 브랜드와의 협업에서도 탁월한 성과를 보여주고 있습니다.
+                </p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h3 class="font-semibold text-gray-800 mb-2">브랜드 협업</h3>
+                        <p class="text-sm text-gray-600">다양한 브랜드와의 성공적인 협업 경험</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h3 class="font-semibold text-gray-800 mb-2">콘텐츠 제작</h3>
+                        <p class="text-sm text-gray-600">창의적이고 매력적인 콘텐츠 제작</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h3 class="font-semibold text-gray-800 mb-2">이벤트 참여</h3>
+                        <p class="text-sm text-gray-600">다양한 이벤트 및 행사 참여</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h3 class="font-semibold text-gray-800 mb-2">팬덤 확장</h3>
+                        <p class="text-sm text-gray-600">글로벌 팬덤과의 소통</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Members -->
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">팀 멤버</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Ibuki -->
+                    <div class="member-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <img src="https://i.namu.wiki/i/z2SGxw9RaxxZH_KnTWuhTGAEcEl9k5Eced_xZ9wIm2tNdxxb7_s98bjs-zWFkyXpKzrxsgsYE8Dee55lrccydl_SJubGz7IcaZSHiIJR_7uWnwD1_qJiaWwANp9IVmRSHupF3srq8NFYWkaHKEWVmA.webp" 
+                             alt="이부키 (Ibuki)" 
+                             class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">이부키 (Ibuki)</h3>
+                            <button onclick="openPartnerModal('이부키 (Ibuki)')" 
+                                    class="contact-btn bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors w-full">
+                                문의하기
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Kyoka -->
+                    <div class="member-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <img src="https://i.namu.wiki/i/FjdF7kxbufXzuGC9ShfcfWQ0JBJXGQRygjHr-M_5NjuJKeDCH12o13JdYOPHixelE-IUDcTmv46X-3X4IAtWe7Z3OhqpnBaaimtexu2W5_gxRy0l7wEdLWUQ1_qyTGGyGBXgnY4ez_9oC3ZriKxhig.webp" 
+                             alt="쿄카 (Kyoka)" 
+                             class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">쿄카 (Kyoka)</h3>
+                            <button onclick="openPartnerModal('쿄카 (Kyoka)')" 
+                                    class="contact-btn bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors w-full">
+                                문의하기
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Minami -->
+                    <div class="member-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <img src="https://i.namu.wiki/i/UtWethVaAvIdA5tm_o_Hga7D3u8rmP5-Gp-7pT_bZyNl4gtlIRsvr2FrLkfeZ1WX1dTBorHZNBxaK23ggA32BgL-2QkIM15kaLb9tvgP1eNwot41R7g4XN65eof1I7_MMis-l4y97j1u1jf-TUUc9Q.webp" 
+                             alt="미나미 (Minami)" 
+                             class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">미나미 (Minami)</h3>
+                            <button onclick="openPartnerModal('미나미 (Minami)')" 
+                                    class="contact-btn bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors w-full">
+                                문의하기
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Uwa -->
+                    <div class="member-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <img src="https://i.namu.wiki/i/HUo_V77k2TUd_PnAVH3hLTRRJip7LnqliYwR9Bqq7UncKIjsaNFj0IEbKBusg7NiVxUWah5vQNyuCKZtWTgz3uo3okrGBdpLeZ_GrefSCeBvtvQuyeIPZnc4Du7Um5VeRaoiIvgQ2oTeewU4KotGVg.webp" 
+                             alt="우와 (Uwa)" 
+                             class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">우와 (Uwa)</h3>
+                            <button onclick="openPartnerModal('우와 (Uwa)')" 
+                                    class="contact-btn bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors w-full">
+                                문의하기
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Junna -->
+                    <div class="member-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <img src="https://i.namu.wiki/i/31g-bxXzG_2ONiCbM7xu0waHsd4VH41E62yciRjrbHI1buByO3WmQb9CSf3MLY0feqOf6nRVMo7sp9my-PPKPVXirRft9qJFqACiztsvW67sRdv4YTFBlf5DBppNfNXnmDMer9FHpq8dDmGVQrOhgg.webp" 
+                             alt="쥰나 (Junna)" 
+                             class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">쥰나 (Junna)</h3>
+                            <button onclick="openPartnerModal('쥰나 (Junna)')" 
+                                    class="contact-btn bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors w-full">
+                                문의하기
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Ruu -->
+                    <div class="member-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <img src="https://i.namu.wiki/i/4VrL7YwwUPmWowek4IFlWAHbd-6mrDPs3eGfYf6m4Zn27P-zArb0k_xUbwcOssbnw1_t7blPXXOxekW2JfGHc-xf7E2kdi9XwYY6qNHZxZ-KBDE3FUJf6hdkkoSDRNHBjssGROleW7cKNH8kKef_UQ.webp" 
+                             alt="루 (Ruu)" 
+                             class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">루 (Ruu)</h3>
+                            <button onclick="openPartnerModal('루 (Ruu)')" 
+                                    class="contact-btn bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors w-full">
+                                문의하기
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Hana -->
+                    <div class="member-card bg-white rounded-lg shadow-md overflow-hidden">
+                        <img src="https://i.namu.wiki/i/ziOjdYtPaAxL1T7UXLoLAspR6yjwlvF-sCRs7FO2iMnkjfoQ-fvV8OvMhSAyrDONOkQ89niMBgR4GI6zmRjDvE4o7z5ckYODH6pKlNQzUahDGXTMoUiiASzmoVz9jG6dGx0IrsLBmu6BSuPWl3ic8g.webp" 
+                             alt="하나 (Hana)" 
+                             class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">하나 (Hana)</h3>
+                            <button onclick="openPartnerModal('하나 (Hana)')" 
+                                    class="contact-btn bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors w-full">
+                                문의하기
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="bg-white rounded-lg shadow-md p-8 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Ojo Gang 섭외 문의</h2>
+                <p class="text-gray-600 text-center mb-8">
+                    Ojo Gang과의 협업을 원하시는 브랜드나 기업은 언제든지 연락주세요.<br>
+                    개별 멤버 섭외부터 팀 전체 섭외까지 다양한 옵션을 제공합니다.
+                </p>
+                <div class="text-center">
+                    <button onclick="openPartnerModal('Ojo Gang 전체')" 
+                            class="contact-btn bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition-colors text-lg font-semibold">
+                        전체 팀 섭외 문의하기
+                    </button>
+                </div>
+            </div>
+
+            <!-- Back to Home -->
+            <div class="text-center">
+                <a href="../index.html" class="inline-flex items-center px-6 py-3 bg-gray-600 text-white font-medium rounded-lg hover:bg-gray-700 transition-colors">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    홈으로 돌아가기
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Google App Script URL
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycbyZZ6exHsa5Q6CEqD94FUYOCxfAg2yIsDCrhvwv8EmnXuyIADfB61mArqY4YRJg7cR7rA/exec';
+
+        // Modal functions
+        function openPartnerModal(channelName) {
+            document.getElementById('partnerModal').style.display = 'block';
+            document.getElementById('inquiryChannel').value = channelName;
+        }
+
+        function closePartnerModal() {
+            document.getElementById('partnerModal').style.display = 'none';
+            document.getElementById('partnerForm').reset();
+            document.getElementById('multiselectDisplay').textContent = '선택해주세요';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('partnerModal');
+            if (event.target === modal) {
+                closePartnerModal();
+            }
+        }
+
+        // Multi-select dropdown functions
+        function toggleMultiselect() {
+            const options = document.getElementById('multiselectOptions');
+            options.style.display = options.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function updateMultiselectDisplay() {
+            const checkboxes = document.querySelectorAll('#multiselectOptions input[type="checkbox"]:checked');
+            const display = document.getElementById('multiselectDisplay');
+            
+            if (checkboxes.length === 0) {
+                display.textContent = '선택해주세요';
+            } else {
+                const values = Array.from(checkboxes).map(cb => cb.value);
+                display.textContent = values.join(', ');
+            }
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.querySelector('.multiselect-dropdown');
+            if (!dropdown.contains(event.target)) {
+                document.getElementById('multiselectOptions').style.display = 'none';
+            }
+        });
+
+        // Checkbox change event
+        document.querySelectorAll('#multiselectOptions input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', updateMultiselectDisplay);
+        });
+
+        // Form submission
+        document.getElementById('partnerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            formData.append('inquiryChannel', document.getElementById('inquiryChannel').value);
+            
+            // Get selected checkboxes
+            const selectedOptions = [];
+            document.querySelectorAll('#multiselectOptions input[type="checkbox"]:checked').forEach(checkbox => {
+                selectedOptions.push(checkbox.value);
+            });
+            formData.append('inquiryType', selectedOptions.join(', '));
+            
+            formData.append('inquiryTitle', document.getElementById('inquiryTitle').value);
+            formData.append('inquiryContact', document.getElementById('inquiryContact').value);
+            formData.append('inquiryContent', document.getElementById('inquiryContent').value);
+
+            // Show loading state
+            const submitBtn = document.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = '전송 중...';
+            submitBtn.disabled = true;
+
+            // Send to Google App Script
+            fetch(scriptUrl, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert('문의가 성공적으로 전송되었습니다.');
+                closePartnerModal();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('문의 전송 중 오류가 발생했습니다. 다시 시도해주세요.');
+            })
+            .finally(() => {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html> 

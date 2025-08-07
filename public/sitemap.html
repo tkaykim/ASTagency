@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사이트맵 - AST Company</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', 'Inter', sans-serif;
+        }
+        .sitemap-item {
+            transition: all 0.3s ease;
+        }
+        .sitemap-item:hover {
+            transform: translateX(10px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">사이트맵</h1>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- 메인 페이지 -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">메인 페이지</h2>
+                    <ul class="space-y-3">
+                        <li class="sitemap-item">
+                            <a href="index.html" class="text-blue-600 hover:text-blue-800 font-medium">홈페이지</a>
+                            <p class="text-sm text-gray-600 mt-1">AST Company 메인 페이지</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 서비스 -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">서비스</h2>
+                    <ul class="space-y-3">
+                        <li class="sitemap-item">
+                            <a href="index.html#services" class="text-blue-600 hover:text-blue-800 font-medium">행사 섭외</a>
+                            <p class="text-sm text-gray-600 mt-1">브랜드 행사 및 이벤트 섭외</p>
+                        </li>
+                        <li class="sitemap-item">
+                            <a href="index.html#services" class="text-blue-600 hover:text-blue-800 font-medium">콘텐츠 제작</a>
+                            <p class="text-sm text-gray-600 mt-1">영상 및 디지털 콘텐츠 제작</p>
+                        </li>
+                        <li class="sitemap-item">
+                            <a href="index.html#services" class="text-blue-600 hover:text-blue-800 font-medium">광고 캠페인</a>
+                            <p class="text-sm text-gray-600 mt-1">효과적인 광고 전략 수립</p>
+                        </li>
+                        <li class="sitemap-item">
+                            <a href="index.html#services" class="text-blue-600 hover:text-blue-800 font-medium">브랜드 매니지먼트</a>
+                            <p class="text-sm text-gray-600 mt-1">종합적인 브랜드 관리 서비스</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 파트너 -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">파트너</h2>
+                    <ul class="space-y-3">
+                        <li class="sitemap-item">
+                            <a href="index.html#partners" class="text-blue-600 hover:text-blue-800 font-medium">파트너 채널</a>
+                            <p class="text-sm text-gray-600 mt-1">협력 채널 및 미디어 파트너</p>
+                        </li>
+                        <li class="sitemap-item">
+                            <a href="index.html#partners" class="text-blue-600 hover:text-blue-800 font-medium">파트너 인플루언서</a>
+                            <p class="text-sm text-gray-600 mt-1">협력 인플루언서 및 크리에이터</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 클라이언트 -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">클라이언트</h2>
+                    <ul class="space-y-3">
+                        <li class="sitemap-item">
+                            <a href="index.html#clients" class="text-blue-600 hover:text-blue-800 font-medium">협력 브랜드</a>
+                            <p class="text-sm text-gray-600 mt-1">다양한 업계의 협력 브랜드들</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 연락처 -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">연락처</h2>
+                    <ul class="space-y-3">
+                        <li class="sitemap-item">
+                            <a href="index.html#contact" class="text-blue-600 hover:text-blue-800 font-medium">문의하기</a>
+                            <p class="text-sm text-gray-600 mt-1">프로젝트 문의 및 상담</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 관리자 -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">관리자</h2>
+                    <ul class="space-y-3">
+                        <li class="sitemap-item">
+                            <a href="admin.html" class="text-blue-600 hover:text-blue-800 font-medium">SEO 관리</a>
+                            <p class="text-sm text-gray-600 mt-1">검색엔진 최적화 관리</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-8 text-center">
+                <a href="index.html" class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    홈으로 돌아가기
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

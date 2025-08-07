@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO 관리 - AST Company</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', 'Inter', sans-serif;
+        }
+        .keyword-item {
+            transition: all 0.3s ease;
+        }
+        .keyword-item:hover {
+            transform: translateY(-2px);
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- 접속 코드 입력 화면 -->
+    <div id="accessScreen" class="min-h-screen flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">관리자 접속</h1>
+            <div class="space-y-4">
+                <div>
+                    <label for="accessCode" class="block text-sm font-medium text-gray-700 mb-2">접속 코드</label>
+                    <input type="password" id="accessCode" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="접속 코드를 입력하세요">
+                </div>
+                <button onclick="checkAccess()" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">
+                    접속하기
+                </button>
+                <div id="errorMessage" class="text-red-600 text-sm text-center hidden"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SEO 관리 화면 -->
+    <div id="adminScreen" class="hidden min-h-screen">
+        <div class="container mx-auto px-4 py-8">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex justify-between items-center mb-8">
+                    <h1 class="text-3xl font-bold text-gray-800">SEO 관리</h1>
+                    <button onclick="logout()" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors">
+                        로그아웃
+                    </button>
+                </div>
+
+                <!-- 키워드 관리 -->
+                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">키워드 관리</h2>
+                    
+                    <!-- 키워드 추가 -->
+                    <div class="mb-6">
+                        <div class="flex gap-4">
+                            <input type="text" id="newKeyword" placeholder="새로운 키워드를 입력하세요" class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <button onclick="addKeyword()" class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors">
+                                추가
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 키워드 목록 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="keywordList">
+                        <!-- 키워드들이 여기에 동적으로 추가됩니다 -->
+                    </div>
+                </div>
+
+                <!-- SEO 설정 -->
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">사이트 설정</h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">사이트 제목</label>
+                                <input type="text" id="siteTitle" value="AST Company | 아스트 컴퍼니 - 행사, 광고, 콘텐츠 에이전시" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">사이트 설명</label>
+                                <textarea id="siteDescription" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">브랜드의 가치를 담아 효과적인 전략을 통해 콘텐츠를 제작합니다. 행사 섭외, 콘텐츠 제작, 광고 캠페인 : 효과적인 광고 전략으로 브랜드의 인지도를 높입니다. 브랜드 매니지먼트 : 종합적인 브랜드 관리 서비스를 제공합니다.</textarea>
+                            </div>
+                            <button onclick="saveSiteSettings()" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors">
+                                설정 저장
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">SEO 통계</h2>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                                <span class="font-medium">총 키워드 수</span>
+                                <span id="totalKeywords" class="text-2xl font-bold text-blue-600">0</span>
+                            </div>
+                            <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                                <span class="font-medium">활성 키워드</span>
+                                <span id="activeKeywords" class="text-2xl font-bold text-green-600">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 접속 코드
+        const ACCESS_CODE = 'dktmxm12';
+        
+        // 기본 키워드 목록
+        let keywords = [
+            '오죠갱',
+            '오죠갱 섭외',
+            '쿄카 섭외',
+            '이부키 섭외',
+            '우와 섭외',
+            '오죠갱 우와',
+            '오죠갱 이부키',
+            '오죠갱 쿄카',
+            '월드오브스트릿우먼파이터',
+            '스우파',
+            'IBUKI',
+            'KYOKA'
+        ];
+
+        // 페이지 로드 시 저장된 키워드 불러오기
+        window.onload = function() {
+            const savedKeywords = localStorage.getItem('seoKeywords');
+            if (savedKeywords) {
+                keywords = JSON.parse(savedKeywords);
+            }
+            updateKeywordList();
+            updateStats();
+        };
+
+        // 접속 확인
+        function checkAccess() {
+            const inputCode = document.getElementById('accessCode').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            if (inputCode === ACCESS_CODE) {
+                document.getElementById('accessScreen').classList.add('hidden');
+                document.getElementById('adminScreen').classList.remove('hidden');
+                errorMessage.classList.add('hidden');
+            } else {
+                errorMessage.textContent = '잘못된 접속 코드입니다.';
+                errorMessage.classList.remove('hidden');
+            }
+        }
+
+        // 로그아웃
+        function logout() {
+            document.getElementById('accessScreen').classList.remove('hidden');
+            document.getElementById('adminScreen').classList.add('hidden');
+            document.getElementById('accessCode').value = '';
+            document.getElementById('errorMessage').classList.add('hidden');
+        }
+
+        // 키워드 추가
+        function addKeyword() {
+            const input = document.getElementById('newKeyword');
+            const keyword = input.value.trim();
+            
+            if (keyword && !keywords.includes(keyword)) {
+                keywords.push(keyword);
+                saveKeywords();
+                updateKeywordList();
+                updateStats();
+                input.value = '';
+            }
+        }
+
+        // 키워드 삭제
+        function deleteKeyword(index) {
+            keywords.splice(index, 1);
+            saveKeywords();
+            updateKeywordList();
+            updateStats();
+        }
+
+        // 키워드 저장
+        function saveKeywords() {
+            localStorage.setItem('seoKeywords', JSON.stringify(keywords));
+        }
+
+        // 키워드 목록 업데이트
+        function updateKeywordList() {
+            const container = document.getElementById('keywordList');
+            container.innerHTML = '';
+            
+            keywords.forEach((keyword, index) => {
+                const keywordElement = document.createElement('div');
+                keywordElement.className = 'keyword-item bg-gray-50 p-4 rounded-lg flex justify-between items-center';
+                keywordElement.innerHTML = `
+                    <span class="font-medium text-gray-800">${keyword}</span>
+                    <button onclick="deleteKeyword(${index})" class="text-red-600 hover:text-red-800">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                    </button>
+                `;
+                container.appendChild(keywordElement);
+            });
+        }
+
+        // 통계 업데이트
+        function updateStats() {
+            document.getElementById('totalKeywords').textContent = keywords.length;
+            document.getElementById('activeKeywords').textContent = keywords.length;
+        }
+
+        // 사이트 설정 저장
+        function saveSiteSettings() {
+            const title = document.getElementById('siteTitle').value;
+            const description = document.getElementById('siteDescription').value;
+            
+            localStorage.setItem('siteTitle', title);
+            localStorage.setItem('siteDescription', description);
+            
+            alert('설정이 저장되었습니다.');
+        }
+
+        // Enter 키로 키워드 추가
+        document.getElementById('newKeyword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addKeyword();
+            }
+        });
+    </script>
+</body>
+</html> 
