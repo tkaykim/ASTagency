@@ -28,9 +28,32 @@
         .member-info {
             background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
         }
+        .nav-logo {
+            transition: all 0.3s ease;
+        }
+        .nav-logo:hover {
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body class="bg-gray-50">
+    <!-- Navigation Header -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <a href="../index.html" class="nav-logo flex items-center space-x-2">
+                    <img src="https://i.namu.wiki/i/vgHY6_CnNdo-5o8o4NDNXUYWrQ2OFW7ne_iwyS2-PaojklhOT0SC4INyUTBV1cIpWdrvRTxsUSgTmeHMKjOu5nUQYIs6X4JLbztXt8BjlgikQLdKU7euclk0xRI1-J_UiZOPiUMLMhJ3M2yFwqxnOg.svg" 
+                         alt="AST Company Logo" 
+                         class="w-8 h-8">
+                    <span class="text-lg font-bold text-gray-800">AST Company</span>
+                </a>
+                <div class="text-sm text-gray-600">
+                    Ojo Gang | 오죠갱
+                </div>
+            </div>
+        </div>
+    </nav>
+
     <!-- Contact Modal -->
     <div id="partnerModal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
         <div class="modal-content" style="background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 90%; max-width: 500px; border-radius: 10px; position: relative;">
