@@ -32,6 +32,43 @@
         .accent-bg {
             background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
         }
+        .new-tab-button {
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            color: #9ca3af;
+            font-weight: 500;
+            font-size: 16px;
+            cursor: pointer;
+            position: relative;
+            white-space: nowrap;
+        }
+        
+        .new-tab-button.active {
+            color: white;
+        }
+        
+        .new-tab-button:hover {
+            color: white;
+        }
+        
+        .tab-line {
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+            border-radius: 1px;
+            transition: width 0.3s ease;
+        }
+        
+        .tab-line.active {
+            width: 100%;
+        }
+        
         .tab-button {
             transition: all 0.3s ease;
             border-radius: 25px;
@@ -39,6 +76,8 @@
             border: 2px solid transparent;
             white-space: pre-line;
             font-weight: 500;
+            aspect-ratio: auto;
+            min-width: fit-content;
         }
         .tab-button.active {
             background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
@@ -58,6 +97,10 @@
         @media (max-width: 640px) {
             .tab-button span {
                 white-space: pre-line;
+            }
+            .tab-button {
+                padding: 8px 16px;
+                font-size: 14px;
             }
         }
         .scroll-container {
@@ -624,26 +667,20 @@
                 </p>
             </div>
             <div class="about-3col">
-                <div class="glass-effect p-8 rounded-2xl">
-                    <div class="accent-color text-4xl mb-4">
-                        <i data-lucide="video" class="w-12 h-12"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-4">콘텐츠 제작</h3>
-                    <p class="text-gray-300">브랜드의 가치를 담은 고품질 영상 콘텐츠를 제작합니다.</p>
+                <div class="relative p-8">
+                    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mb-6"></div>
+                    <h3 class="text-xl font-semibold mb-4 text-center">콘텐츠 제작</h3>
+                    <p class="text-gray-300 text-center">브랜드의 가치를 담은 고품질 영상 콘텐츠를 제작합니다.</p>
                 </div>
-                <div class="glass-effect p-8 rounded-2xl">
-                    <div class="accent-color text-4xl mb-4">
-                        <i data-lucide="megaphone" class="w-12 h-12"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-4">광고 캠페인</h3>
-                    <p class="text-gray-300">효과적인 광고 전략으로 브랜드의 인지도를 높입니다.</p>
+                <div class="relative p-8">
+                    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mb-6"></div>
+                    <h3 class="text-xl font-semibold mb-4 text-center">광고 캠페인</h3>
+                    <p class="text-gray-300 text-center">효과적인 광고 전략으로 브랜드의 인지도를 높입니다.</p>
                 </div>
-                <div class="glass-effect p-8 rounded-2xl">
-                    <div class="accent-color text-4xl mb-4">
-                        <i data-lucide="users" class="w-12 h-12"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-4">브랜드 매니지먼트</h3>
-                    <p class="text-gray-300">종합적인 브랜드 관리 서비스를 제공합니다.</p>
+                <div class="relative p-8">
+                    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-gradient-to-r from-green-500 to-blue-500 rounded-full mb-6"></div>
+                    <h3 class="text-xl font-semibold mb-4 text-center">브랜드 매니지먼트</h3>
+                    <p class="text-gray-300 text-center">종합적인 브랜드 관리 서비스를 제공합니다.</p>
                 </div>
             </div>
         </div>
@@ -695,7 +732,7 @@
         <div class="max-w-7xl mx-auto text-center mb-8">
             <h3 class="text-3xl font-bold mb-2 text-white-900">PARTNER INFLUENCER</h3>
             <p class="text-gray-600 mb-6">협력 인플루언서</p>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-5xl mx-auto">
                 
                 <div class="w-full max-w-full flex flex-col items-center">
                     <img src="PartnerInfluencer\deukie.png" alt="deukie" class="w-30 h-46 object-cover rounded-lg shadow-md mb-2 partner-image" onclick="openPartnerModal('@deukie_______')"/>
@@ -864,11 +901,23 @@
             </h3>
             <p class="text-gray-400 text-center mb-12">진행 사례</p>
             <!-- Tabs -->
-            <div class="flex justify-center space-x-4 mb-12">
-                <button class="tab-button active" onclick="showTab('all')"><span>모두보기</span></button>
-                <button class="tab-button" onclick="showTab('brand-films')"><span>브랜드필름</span></button>
-                <button class="tab-button" onclick="showTab('branded-content')"><span>브랜디드/PPL콘텐츠</span></button>
-                <button class="tab-button" onclick="showTab('short-form')"><span>숏폼</span></button>
+            <div class="flex justify-center space-x-8 mb-12">
+                <button class="new-tab-button active" onclick="showTab('all')">
+                    <span>모두보기</span>
+                    <div class="tab-line active"></div>
+                </button>
+                <button class="new-tab-button" onclick="showTab('brand-films')">
+                    <span>브랜드필름</span>
+                    <div class="tab-line"></div>
+                </button>
+                <button class="new-tab-button" onclick="showTab('branded-content')">
+                    <span>브랜디드/PPL콘텐츠</span>
+                    <div class="tab-line"></div>
+                </button>
+                <button class="new-tab-button" onclick="showTab('short-form')">
+                    <span>숏폼</span>
+                    <div class="tab-line"></div>
+                </button>
             </div>
             <!-- All Tab -->
             <div id="all" class="tab-content">
@@ -1275,15 +1324,19 @@
             tabContents.forEach(content => {
                 content.classList.add('hidden');
             });
-            // Remove active class from all buttons
-            const tabButtons = document.querySelectorAll('.tab-button');
+            // Remove active class from all buttons and lines
+            const tabButtons = document.querySelectorAll('.new-tab-button');
             tabButtons.forEach(button => {
                 button.classList.remove('active');
+                const line = button.querySelector('.tab-line');
+                if (line) line.classList.remove('active');
             });
             // Show selected tab content
             document.getElementById(tabName).classList.remove('hidden');
-            // Add active class to clicked button
+            // Add active class to clicked button and its line
             event.target.classList.add('active');
+            const activeLine = event.target.querySelector('.tab-line');
+            if (activeLine) activeLine.classList.add('active');
         }
         function openVideo(url, e) {
             if(e) e.stopPropagation();
